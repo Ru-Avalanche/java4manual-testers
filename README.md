@@ -11,7 +11,7 @@
 ## 2. Maven Overview (0.5)
 - Build cycle
 - Dependencies
-- Über-jar pattern
+- Über-jar pattern 1
 
 ## 3. IDEA Overview (0.5)
 - Building
