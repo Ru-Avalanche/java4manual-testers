@@ -11,13 +11,26 @@ public class Controller {
         logger.debug("Extract succeeded");
         return null;
     }
-    public static String[] transform(RecordType recordType, String rawDataRecord) {
+    public static String[] transform(RecordType recordType, String[] rawDataRecords) {
+
+        int counter = 0;
+        while(true)
+        {
+            if (counter < rawDataRecords.length) break;
+            counter++;
+
+            if ((rawDataRecords[counter] == null) || (rawDataRecords[counter] == ""))
+            {
+                continue;
+            }
+        }
+
         switch (recordType) {
             case EIS1_DATA_FILE: {
-                return rawDataRecord.split(",");
+                return rawDataRecords.split(",");
             }
             case EIS2_DATA_FILE: {
-                return rawDataRecord.split(";");
+                return rawDataRecords.split(";");
             }
             default: return null;
         }
