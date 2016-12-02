@@ -1,42 +1,42 @@
 package com.db.edu.etl;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 public class Controller {
-    private static Logger logger = LoggerFactory.getLogger(Controller.class);
 
-    public static String extract(RecordType recordType) {
-        logger.debug("Starting to extract");
-        logger.debug("Extract succeeded");
-        return null;
+
+    private static final Logger logger = LoggerFactory.getLogger(Controller.class);
+    private static double average;
+
+    public static int[] extract(RecordType recordType) {
+        logger.debug("Start extracting for RecordType: " + recordType.name());
+        logger.debug("End extracting for RecordType: " + recordType.name());
+        return new int[] {1,2,recordType.ordinal()};
     }
-    public static String[] transform(RecordType recordType, String[] rawDataRecords) {
 
-        int counter = 0;
-        while(true)
-        {
-            if (counter < rawDataRecords.length) break;
-            counter++;
-
-            if ((rawDataRecords[counter] == null) || (rawDataRecords[counter] == ""))
-            {
-                continue;
-            }
-        }
-
-        switch (recordType) {
-            case EIS1_DATA_FILE: {
-                return rawDataRecords.split(",");
-            }
-            case EIS2_DATA_FILE: {
-                return rawDataRecords.split(";");
-            }
-            default: return null;
-        }
-    }
-    public static void load(String... transform){
-        logger.debug("Starting to load data");
-        logger.debug("Load finished");
-    }
+           public static int[] transform(RecordType recordType, int[] rawDataRecords) {
+                 float sum = 0;
+                if (rawDataRecords.length == 0) {
+                         logger.error("Input data set is empty");
+                        return rawDataRecords;
+                    } else {
+                        for (int current : rawDataRecords) {
+                                sum += current;
+                            }
+                    }
+                logger.info("Average value in extracted list: " + sum/rawDataRecords.length);
+               average = (double)sum/rawDataRecords.length;
+               return rawDataRecords;
+           }
+public static double getAverage(){
+    return average;
+}
+             public static void load(int[] transformedData) {
+                logger.debug("Start loading transformed data");
+                logger.debug("End loading transformed data");
+                 logger.info("---------- Loading has ended ----------");
+          }
 }
