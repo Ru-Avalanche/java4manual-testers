@@ -17,13 +17,14 @@ private static final Logger logger = LoggerFactory.getLogger(EtlApp.class);
 private EtlApp() {}
 
 public static void main(String... args) {
-    Controller.transform(RecordType.EIS1_DATA_FILE, new int[]{1, 0, 3, 100, 50, -3});
+    Controller.transform(RecordType.EIS1_DATA_FILE, new String[]{"1", "0", "3"});
     fullEtlProcess();
 }
 
     private static void fullEtlProcess() {
         for (RecordType recordType : RecordType.values()) {
-                      load(transform(
+                      load(
+                              transform(
                                       recordType,
                                       extract(recordType)));
                   }

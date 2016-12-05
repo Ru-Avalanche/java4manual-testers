@@ -9,7 +9,6 @@ public class Controller {
 
 
     private static final Logger logger = LoggerFactory.getLogger(Controller.class);
-    private static double average;
 
     public static int[] extract(RecordType recordType) {
         logger.debug("Start extracting for RecordType: " + recordType.name());
@@ -17,24 +16,29 @@ public class Controller {
         return new int[] {1,2,recordType.ordinal()};
     }
 
-           public static int[] transform(RecordType recordType, int[] rawDataRecords) {
-                 float sum = 0;
-                if (rawDataRecords.length == 0) {
+           public static TransformationResultWithAverageDTO transform(RecordType recordType, String[] rawDataRecords) {
+               float sum = 0;
+               int[] recordsInt = new int[rawDataRecords.length];
+               for (int i = 0; i < rawDataRecords.length; i++) {
+                   recordsInt[i] = Integer.parseInt(rawDataRecords[i]);
+               }
+
+                if (recordsInt.length == 0) {
                          logger.error("Input data set is empty");
-                        return rawDataRecords;
+                        return new TransformationResultWithAverageDTO(recordsInt, 0);
                     } else {
-                        for (int current : rawDataRecords) {
+                        for (int current : recordsInt) {
                                 sum += current;
                             }
                     }
                 logger.info("Average value in extracted list: " + sum/rawDataRecords.length);
-               average = (double)sum/rawDataRecords.length;
-               return rawDataRecords;
+               double average = (double)sum/recordsInt.length;
+               return new TransformationResultWithAverageDTO(recordsInt, average);
            }
-public static double getAverage(){
-    return average;
-}
-             public static void load(int[] transformedData) {
+
+
+
+             public static void load(TransformationResultWithAverageDTO transformedData) {
                 logger.debug("Start loading transformed data");
                 logger.debug("End loading transformed data");
                  logger.info("---------- Loading has ended ----------");
